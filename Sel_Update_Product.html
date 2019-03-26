@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+
+<body>
+<form id="form1" name="form1" method="post" action="/Update_ptr">
+  <table width="200" border="1">
+    <tr>
+      <td>Category</td>
+      <td><label for="textfield4"></label>
+      <input type="text" name="textfield4" id="textfield4" value="{{val[1]}}" /></td>
+    </tr>
+    <tr>
+      <td>Item name</td>
+      <td><label for="textfield"></label>
+        <input type="text" name="textfield" id="textfield" value="{{val[2]}}" /></td>
+    </tr>
+    <tr>
+      <td>Price</td>
+      <td><label for="textfield2"></label>
+        <input type="text" name="textfield2" id="textfield2" value="{{val[3]}}" /></td>
+    </tr>
+    <tr>
+      <td>Qty</td>
+      <td><label for="textfield3"></label>
+        <input type="text" name="textfield3" id="textfield3" value="{{val[4]}}"/></td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td><label for="textarea"></label>
+        <textarea name="textarea" id="textarea" cols="45" rows="5">{{val[5]}}</textarea></td>
+    </tr>
+    <tr>
+      <td>Photo_1 </td>
+      <td><a href="{{url_for('img1_uld',id=val[0])}}">Change Photo1</a></td>
+    </tr>
+    <tr>
+      <td>Photo_2</td>
+      <td><a href="{{url_for('img2_uld',id=val[0])}}">Change Photo2</a></label></td>
+    </tr>
+    <tr>
+      <td>Video</td>
+      <td><a href="{{url_for('Video_uld',id=val[0])}}">Change Video</a></label></td>
+    </tr>
+    <tr>
+      <td colspan="2"><div align="center">
+        <input type="submit" name="button2" id="button3" value="Update " />
+      </div></td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>
