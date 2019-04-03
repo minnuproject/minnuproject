@@ -28,6 +28,9 @@ def log():
         if s[3]=='appowner':
             return render_template('App_Owner_Home.html')
         elif s[3]=='sellers':
+            id=s[0]
+            session['sid']=id
+
             return render_template('Sellers_Home.html')
         else:
             return '''<script>alert('invalid');window.location="/"</script>'''
@@ -163,10 +166,13 @@ def index4():
 @app.route('/Ptrview',methods=['POST','GET'])
 def Ptrview():
     pid=request.form['item']
-    cmd.execute("select * from product_mgt where pid='"+pid+"'")
+    cmd.execute("SELECT DISTINCT `stock_notification`.`stk_id`,`product_mgt`.`item_name`,`stock_notification`.`stock` FROM `product_mgt` INNER JOIN `stock_notification` ON `product_mgt`.`pid`=`stock_notification`.pid WHERE `stock_notification`.`pid`='"+str(pid)+"'")
     bs=cmd.fetchall()
+    print(bs)
     return render_template('View_Stock_Notification.html',val=bs)
 
+
+# Module-2
 
 
 @app.route('/Sellers_Home')
@@ -300,7 +306,11 @@ def Sel_Addprt():
     Video=request.files['fileField3']
     vlc=secure_filename(Video.filename)
     Video.save(os.path.join(path2,vlc))
-    cmd.execute("insert into product_mgt values(null,'"+Category+"','"+Item_name+"','"+Price+"','"+Qty+"','"+Description+"','"+Photo1+"','"+Photo2+"','"+Video+"','0')")
+
+    cmd.execute("insert into product_mgt values(null,'"+Category+"','"+Item_name+"','"+Price+"','"+Qty+"','"+Description+"','"+img+"','"+img1+"','"+vlc+"','0')")
+    id=con.insert_id()
+    sid=session['sid']
+    cmd.execute("insert into sel_product values(null,'"+str(id)+"','"+str(sid)+"')")
     con.commit()
     return '''<script>alert("inserted successfully");window.location="Sel_Product_mgt"</script>'''
 
@@ -403,6 +413,98 @@ def Sel_SiteView():
     cmd.execute("select * from site_notification")
     sit=cmd.fetchall()
     return render_template('Sel_SiteNoti_View.html',val=sit)
+
+
+@app.route('/Sel_StockNoti')
+def Sel_StockNoti():
+    cmd.execute("SELECT DISTINCT category FROM  product_mgt")
+    sn=cmd.fetchall()
+    return render_template('Sel_Stock_Notification.html',val=sn)
+
+@app.route('/index6',methods=['POST'])
+def index6():
+    data=request.form['sn']
+    print(data)
+    cmd.execute("SELECT pid,item_name FROM product_mgt WHERE category='"+data+"'")
+    s=cmd.fetchall()
+    sn=['0','select']
+    for d in s:
+        sn.append(d[0])
+        sn.append(d[1])
+    resp=make_response(jsonify(sn))
+    resp.status_code=200
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
+@app.route('/stknoti',methods=['POST','GET'])
+def stknoti():
+     b1=request.form['button']
+
+     if b1=='Search':
+        pid = request.form['item']
+        cmd.execute("SELECT DISTINCT stock_notification.stk_id,product_mgt.item_name,stock_notification.`stock` FROM `stock_notification` INNER JOIN `product_mgt` ON `product_mgt`.`pid`=`stock_notification`.`pid` WHERE `stock_notification`.`sid` and product_mgt.pid='" + pid + "'")
+        stk = cmd.fetchall()
+        print(stk)
+        return render_template('Sel_Stock_Notification.html', val=stk)
+     else:
+       return redirect('Add_Stock')
+
+
+@app.route('/Add_Stock',methods=['POST','GET'])
+def Add_Stock():
+   cmd.execute("SELECT DISTINCT category FROM  product_mgt")
+   saa=cmd.fetchall()
+   return render_template('Sel_StockAdd.html',val=saa)
+
+@app.route('/index7',methods=['POST'])
+def index7():
+    data=request.form['de']
+    print(data)
+    cmd.execute("SELECT pid,`item_name` FROM `product_mgt` WHERE `category`='"+data+"'")
+    a=cmd.fetchall()
+    re=['0','select']
+    for d in a:
+        re.append(d[0])
+        re.append(d[1])
+    resp=make_response(jsonify(re))
+    resp.status_code=200
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
+@app.route('/Stk_Add',methods=['POST','GET'])
+def Stk_Add():
+    sid=session['sid']
+    pid=request.form['item']
+    Stock=request.form['textfield']
+    cmd.execute("select * from stock_notification where pid='"+pid+"'")
+    s=cmd.fetchone()
+    if s is None:
+        cmd.execute("insert into stock_notification values(null,'" + str(pid) + "','" + str( sid) + "','" + Stock + "',curdate())")
+        con.commit()
+    else:
+        stk=int(s[3])+int(Stock)
+        cmd.execute("update stock_notification set stock='"+str(stk)+"' where pid='"+pid+"'")
+        con.commit()
+
+    return '''<script>alert("inserted");window.location="/Sel_StockNoti"</script>'''
+
+@app.route('/Update_stock',methods=['POST','GET'])
+def Update_stock():
+    id=request.args.get('id')
+    session['id']=id
+    cmd.execute("select stock_notification.stk_id,stock_notification.stock,product_mgt.category,product_mgt.item_name from stock_notification inner join product_mgt on stock_notification.pid=product_mgt.pid where stock_notification.stk_id='"+str(id)+"'")
+    s=cmd.fetchone()
+    print(s)
+    return render_template('Sel_StockUpdate.html',val=s)
+
+@app.route('/Upt_Stk',methods=['POST','GET'])
+def Upt_Stk():
+    id=session['id']
+    Stock=request.form['textfield']
+    cmd.execute("update stock_notification set stock='"+Stock+"' where stk_id='"+str(id)+"'")
+    con.commit()
+    return '''<script>alert("Updated Successfully");window.location='/Sel_StockNoti'</script>'''
+
 
 
 
