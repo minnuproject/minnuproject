@@ -11,8 +11,8 @@
     <tr>
       <td>Category</td>
       <td><label for="cat"></label>
-        <select name="cat" id="cat">
-             <option value="0">Select</option>
+        <select name="cat" id="cat" required>
+             <option value="">--Select--</option>
             {% for i in val %}
             <option value="{{i[0]}}">{{i[0]}}</option>
             {% endfor %}
@@ -21,7 +21,8 @@
     <tr>
       <td>Item Name</td>
       <td><label for="item"></label>
-        <select name="item" id="item">
+        <select name="item" id="item" required>
+          <option value="">--Select--</option>
       </select></td>
        <td><input type="submit" name="button" id="button" value="Search" /></td>
     </tr>
