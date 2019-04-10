@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+
+<body>
+<form id="form1" name="form1" method="post" action="/Stk_Add">
+  <table width="200" border="1">
+    <tr>
+      <td>Category</td>
+      <td><label for="cat"></label>
+        <select name="cat" id="cat" required>
+          <option value="">--Select--</option>
+          {% for i in val %}
+          <option value="{{i[0]}}">{{i[0]}}</option>
+          {% endfor %}
+      </select></td>
+    </tr>
+    <tr>
+      <td>Item Name</td>
+      <td><label for="item"></label>
+        <select name="item" id="item" required>
+          <option value="">--Select--</option>
+      </select></td>
+    </tr>
+    <tr>
+      <td>Stock</td>
+      <td><label for="textfield"></label>
+      <input type="text" name="textfield" id="textfield" required pattern="[0-9]" /></td>
+    </tr>
+    <tr>
+      <td colspan="2"><div align="center">
+        <input type="submit" name="button" id="button" value="Submit" />
+      </div></td>
+    </tr>
+  </table>
+</form>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+
+$(document).ready(function(){
+
+    $("select#cat").change(function() {
+
+        if ($(this).val() != 'Select') {
+
+            var br = $('#cat option:selected').text();
+
+
+            $.ajax({
+                type: 'POST',
+                url: "/index4",
+                data: { sn: br },
+
+                success: function(response) {
+
+
+                var opt = '';
+    for (var i=0, l=response.length; i<l; i=i+2)
+    {
+        opt+='<option value="'+response[i]+'">'+response[i+1]+'</option>';
+
+}
+
+ $('select#item').html('').prop('disabled',false)
+    $('select#item').append(opt);
+                }
+            });
+        }
+        else {
+            $('select#item').html('').prop('disabled',true);
+        }
+    });
+});
+</script>
+</body>
+</html>
