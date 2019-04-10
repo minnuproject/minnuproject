@@ -20,18 +20,20 @@
         <td width="100">Office No:</td>
         <td width="109">&nbsp;</td>
       </tr>
+      {% for d in val %}
       <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td><p><a href="#">Approve</a></p>
-        <p><a href="#">Reject</a></p></td>
+        <td>{{d[1]}}</td>
+        <td>{{d[2]}}</td>
+        <td>{{d[3]}}</td>
+        <td>{{d[4]}}  {{d[5]}}  {{d[6]}}</td>
+        <td>{{d[7]}}</td>
+        <td>{{d[8]}}</td>
+        <td>{{d[9]}}</td>
+        <td>{{d[10]}}</td>
+        <td><p><a href="{{url_for('approve',id=d[0])}}">Approve</a></p>
+        <p><a href="{{url_for('reject',id=d[0])}}">Reject</a></p></td>
       </tr>
+      {% endfor %}
     </table>
   </form>
 </blockquote>
