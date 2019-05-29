@@ -1,50 +1,81 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-</head>
+<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />-->
+<!--<title>Untitled Document</title>-->
+<!--</head>-->
 
-<body>
+<!--<body>-->
+{% extends 'SelMoreTemplates.html' %}
+  {% block body %}
 <form id="form1" name="form1" method="post" action="/Add_Off">
-  <table width="538" border="1">
+  <table width="527" border="0">
     <tr>
       <td>Category</td>
+      <td>&nbsp;</td>
       <td><label for="cat"></label>
-        <select name="cat" id="cat">
-          <option value="0">--Select--</option>
+        <select name="cat" id="cat" required>
+          <option value="">--Select--</option>
           {% for i in val %}
           <option value="{{i[0]}}">{{i[0]}}</option>
           {% endfor %}
       </select></td>
     </tr>
     <tr>
-      <td width="87">Item Name</td>
-      <td width="435"><label for="item"></label>
-        <select name="item" id="item">
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="118">Item Name</td>
+      <td width="6">&nbsp;</td>
+      <td width="389"><label for="item"></label>
+        <select name="item" id="item" required>
+          <option value="">--Select--</option>
       </select></td>
     </tr>
     <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
       <td>Offers</td>
+      <td>&nbsp;</td>
       <td><label for="textarea"></label>
-        <textarea name="textarea" id="textarea" cols="45" rows="5"></textarea></td>
+        <textarea name="textarea" id="textarea" cols="45" rows="5" required></textarea></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Periods</td>
+      <td>&nbsp;</td>
       <td><label for="textfield3"></label>
-        <input type="date" name="textfield3" id="textfield3" />
+        <input type="date" name="textfield3" id="textfield3" required/>
         <label for="textfield4"></label>
         to
-        <input type="date" name="textfield4" id="textfield4" />
+        <input type="date" name="textfield4" id="textfield4" required/>
         <label for="textfield4"></label></td>
     </tr>
     <tr>
-      <td>New Price</td>
-      <td><label for="textfield5"></label>
-        <input type="text" name="textfield5" id="textfield5" /></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
-      <td colspan="2"><div align="center">
+      <td>Original Price</td>
+      <td>&nbsp;</td>
+      <td><label for="textfield5"></label>
+        <input type="text" name="textfield5" id="textfield5" required/></td>
+    </tr>
+    <tr>
+      <td colspan="3">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="3"><div align="center">
         <input type="submit" name="button" id="button" value="Submit" />
       </div></td>
     </tr>
@@ -64,7 +95,7 @@ $(document).ready(function(){
 
             $.ajax({
                 type: 'POST',
-                url: "/index3",
+                url: "/index5",
                 data: { de: br },
 
                 success: function(response) {
@@ -88,5 +119,6 @@ $(document).ready(function(){
     });
 });
 </script>
-</body>
-</html>
+{% endblock %}
+<!--</body>-->
+<!--</html>-->

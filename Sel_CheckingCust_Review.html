@@ -1,11 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-</head>
+<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />-->
+<!--<title>Untitled Document</title>-->
+<!--</head>-->
 
-<body>
+<!--<body>-->
+{% extends 'SelMoreTemplates.html' %}
+  {% block body %}
 <form id="form1" name="form1" method="post" action="">
   <table width="402" border="1">
     <tr>
@@ -13,20 +15,23 @@
       <td>Item Name</td>
       <td>Review</td>
       <td>Photo</td>
+      <td>Rating</td>
       <td>Date</td>
       <td>&nbsp;</td>
     </tr>
       {% for d in val %}
     <tr>
-      <td>{{d[6]}}</td>
       <td>{{d[7]}}</td>
+      <td>{{d[8]}}</td>
       <td>{{d[3]}}</td>
       <td><img src="../static/products/{{d[4]}}" width="150" height="150"></td>
       <td>{{d[5]}}</td>
+      <td>{{d[6]}}</td>
       <td><a href="{{url_for('delete_CustReview',id=d[0])}}">Delete</a></td>
     </tr>
       {% endfor %}
   </table>
 </form>
-</body>
-</html>
+{% endblock %}
+<!--</body>-->
+<!--</html>-->
