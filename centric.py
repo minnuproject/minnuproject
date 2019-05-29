@@ -10,12 +10,12 @@ path2="C:\\Users\\hp\\PycharmProjects\\User Centric Similarity Search\\similarit
 app.secret_key='sk'
 @app.route('/')
 def home():
-    return render_template('Home_Page.html')
-
+    return render_template('index.html')
 
 @app.route('/login')
 def login():
     return render_template('Login.html')
+
 @app.route('/log',methods=['POST','GET'])
 def log():
     Uname=request.form['textfield']
@@ -88,14 +88,24 @@ def site_noti():
         message = request.form['textfield']
         cmd.execute("insert into site_notification values(null,'" + message + "',curdate())")
         con.commit()
-        return '''<script>alert('submitted');window.location="Site_Notification"</script>'''
+        return '''<script>alert('submitted');window.location="/Site_Notification"</script>'''
     else:
         return render_template('App_Owner_Home.html')
 
 
 @app.route('/block_users')
 def block_users():
-    return render_template('Block_Users.html')
+    cmd.execute(" SELECT `customer_reg`.*,`login`.type FROM `customer_reg` INNER JOIN `login` ON `customer_reg`.`uid`=`login`.`id` WHERE `login`.`type`='blocked'")
+    bu=cmd.fetchall()
+    return render_template('Block_Users.html',val=bu)
+@app.route('/unblock')
+def unblock():
+    id=request.args.get('id')
+    cmd.execute("UPDATE `login` SET `type`='user' WHERE `id`='"+str(id)+"'")
+    con.commit()
+    return '''<script>alert('Unblocked');window.location="/block_users"</script>'''
+
+
 
 
 @app.route('/View_Offers')
@@ -111,6 +121,7 @@ def index3():
     data = request.form['de']
     print(data)
     cmd.execute("SELECT pid,`item_name` FROM `product_mgt` WHERE `category`='"+data+"'")
+    # cmd.execute("SELECT `product_mgt`.`pid`,`product_mgt`.`item_name` FROM `product_mgt` INNER JOIN `sel_product` ON `product_mgt`.`pid`=`sel_product`.`pid` WHERE `product_mgt`.`category`='"+data+"' AND `sel_product`.`sid`='"+str(session['sid'])+"'")
     s=cmd.fetchall()
     re=['0','Select']
     for d in s:
@@ -148,12 +159,27 @@ def View_Stock_Noti():
     cmd.execute("SELECT DISTINCT category FROM  product_mgt")
     s=cmd.fetchall()
     return render_template('View_Stock_Notification.html',val=s)
-
+@app.route('/index10',methods=['POST'])
+# def index10():
+#     data=request.form['sn']
+#     print(data)
+#     cmd.execute("SELECT pid,item_name FROM product_mgt WHERE category='"+data+"' ")
+#     # cmd.execute("SELECT `product_mgt`.`pid`,`product_mgt`.`item_name` FROM `product_mgt` INNER JOIN `sel_product` ON `product_mgt`.`pid`=`sel_product`.`pid` WHERE `product_mgt`.`category`='"+data+"' AND `sel_product`.`sid`='"+str(session['sid'])+"'")
+#     t=cmd.fetchall()
+#     sg=['0','select']
+#     for d in t :
+#         sg.append(d[0])
+#         sg.append(d[1])
+#     resp=make_response(jsonify(sg))
+#     resp.status_code=200
+#     resp.headers['Access-Control-Allow-Origin']='*'
+#     return resp
 @app.route('/index4',methods=['POST'])
 def index4():
     data=request.form['sn']
     print(data)
-    cmd.execute("SELECT pid,item_name FROM product_mgt WHERE category='"+data+"'")
+    cmd.execute("SELECT pid,item_name FROM product_mgt WHERE category='"+data+"' ")
+    # cmd.execute("SELECT `product_mgt`.`pid`,`product_mgt`.`item_name` FROM `product_mgt` INNER JOIN `sel_product` ON `product_mgt`.`pid`=`sel_product`.`pid` WHERE `product_mgt`.`category`='"+data+"' AND `sel_product`.`sid`='"+str(session['sid'])+"'")
     t=cmd.fetchall()
     sg=['0','select']
     for d in t :
@@ -201,13 +227,15 @@ def S_regi():
     id=con.insert_id()
     cmd.execute("insert into sellers_reg values('"+str(id)+"','"+Name+"','"+Comp_Name+"','"+Build_No+"','"+ City+"','"+State+"','"+Country+"','"+Pincode+"','"+Email+"','"+Mob+"','"+ num+"')")
     con.commit()
-    return '''<script>alert("inserted successfully");window.location="/"</script>'''
+    return '''<script>alert("inserted successfully");window.location="/Sellers_Reg"</script>'''
 
 
 @app.route('/Sel_Product_mgt')
 def Sel_Product_mgt():
-    cmd.execute("select * from product_mgt")
+    print(session['sid'])
+    cmd.execute("SELECT `product_mgt`.*,`sel_product`.`sid` FROM `product_mgt` INNER JOIN `sel_product` ON `product_mgt`.`pid`=`sel_product`.`pid` WHERE `sel_product`.`sid`='"+str(session['sid'])+"'")
     pmt=cmd.fetchall()
+    print(pmt)
     return render_template('Sel_Product_Management.html',val=pmt)
 @app.route('/Pt_Update_view')
 def Pt_Update_view():
@@ -226,12 +254,11 @@ def Pt_Update_view1():
 @app.route('/Update_ptr',methods=['POST','GET'])
 def Update_ptr():
     id=session['idd']
-    Category=request.form['textfield4']
-    Item_name=request.form['textfield']
+
     Price=request.form['textfield2']
     Qty=request.form['textfield3']
     Description=request.form['textarea']
-    cmd.execute("update product_mgt set category='"+Category+"',item_name='"+Item_name+"',price='"+Price+"',qty='"+Qty+"',description='"+Description+"' where pid='"+str(id)+"'")
+    cmd.execute("update product_mgt set price='"+Price+"',qty='"+Qty+"',description='"+Description+"' where pid='"+str(id)+"'")
     con.commit()
     return '''<script>alert('updated');window.location="/Pt_Update_view"</script>'''
 
@@ -316,7 +343,7 @@ def Sel_Addprt():
 
 @app.route('/Offers_Management')
 def Offers_Management():
-    cmd.execute("SELECT offers.*,product_mgt.item_name,product_mgt.price FROM offers INNER JOIN product_mgt ON offers.pid=product_mgt.pid")
+    cmd.execute("SELECT offers.*,product_mgt.item_name,product_mgt.price,`sel_product`.`sid` FROM offers INNER JOIN product_mgt ON offers.pid=product_mgt.pid inner join `sel_product` on`product_mgt`.`pid`=`sel_product`.`pid` where `sel_product`.`sid`='"+str(session['sid'])+"'")
     of=cmd.fetchall()
     return render_template('Sel_Offers_Management.html',val=of)
 @app.route('/off_mgt',methods=['POST','GET'])
@@ -339,7 +366,8 @@ def Add_Offers():
 def index5():
     data=request.form['de']
     print(data)
-    cmd.execute("SELECT pid,`item_name` FROM `product_mgt` WHERE `category`='"+data+"'")
+    # cmd.execute("SELECT pid,`item_name` FROM `product_mgt` WHERE `category`='"+data+"'")
+    cmd.execute("SELECT `product_mgt`.`pid`,`product_mgt`.`item_name` FROM `product_mgt` INNER JOIN `sel_product` ON `product_mgt`.`pid`=`sel_product`.`pid` WHERE `product_mgt`.`category`='" + data + "' AND `sel_product`.`sid`='" + str(session['sid']) + "'")
     s=cmd.fetchall()
     re=['0','select']
     for d in s:
@@ -356,8 +384,8 @@ def Add_Off():
     Offers=request.form['textarea']
     frm_date=request.form['textfield3']
     to_date=request.form['textfield4']
-    New_Price=request.form['textfield5']
-    cmd.execute("insert into offers values(null,'"+pid+"','"+ Offers+"','"+frm_date+"','"+ to_date+"','"+New_Price+"')")
+    old_price=request.form['textfield5']
+    cmd.execute("insert into offers values(null,'"+pid+"','"+ Offers+"','"+frm_date+"','"+ to_date+"','"+old_price+"')")
     con.commit()
     return '''<script>alert("Inserted");window.location='/Add_Offers'</script>'''
 
@@ -376,8 +404,8 @@ def Upt_off():
     Offers=request.form['textarea']
     frm_date=request.form['textfield3']
     to_date=request.form['textfield4']
-    New_Price=request.form['textfield5']
-    cmd.execute("update offers set offers='"+Offers+"',from_date='"+frm_date+"',to_date='"+to_date+"',new_price='"+New_Price+"' where off_no='"+str(id)+"'")
+    old_price=request.form['textfield5']
+    cmd.execute("update offers set offers='"+Offers+"',from_date='"+frm_date+"',to_date='"+to_date+"',old_price='"+old_price+"' where off_no='"+str(id)+"'")
     con.commit()
     return '''<script>alert("updated successfully");window.location="Update_Offers"</script>'''
 
@@ -425,8 +453,10 @@ def Sel_StockNoti():
 def index6():
     data=request.form['sn']
     print(data)
-    cmd.execute("SELECT pid,item_name FROM product_mgt WHERE category='"+data+"'")
+    # cmd.execute("SELECT pid,item_name FROM product_mgt WHERE category='"+data+"'")
+    cmd.execute("SELECT `product_mgt`.`pid`,`product_mgt`.`item_name` FROM `product_mgt` INNER JOIN `sel_product` ON `product_mgt`.`pid`=`sel_product`.`pid` WHERE `product_mgt`.`category`='"+data+"' AND `sel_product`.`sid`='"+str(session['sid'])+"'")
     s=cmd.fetchall()
+    print("ss---",s)
     sn=['0','select']
     for d in s:
         sn.append(d[0])
@@ -458,9 +488,10 @@ def Add_Stock():
 
 @app.route('/index7',methods=['POST'])
 def index7():
-    data=request.form['de']
+    data=request.form['sn']
     print(data)
-    cmd.execute("SELECT pid,`item_name` FROM `product_mgt` WHERE `category`='"+data+"'")
+    # cmd.execute("SELECT pid,`item_name` FROM `product_mgt` WHERE `category`='"+data+"'")
+    cmd.execute("SELECT `product_mgt`.`pid`,`product_mgt`.`item_name` FROM `product_mgt` INNER JOIN `sel_product` ON `product_mgt`.`pid`=`sel_product`.`pid` WHERE `product_mgt`.`category`='" + data + "' AND `sel_product`.`sid`='" + str(session['sid']) + "'")
     a=cmd.fetchall()
     re=['0','select']
     for d in a:
