@@ -1,86 +1,140 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-</head>
+<!--&lt;!&ndash;<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">&ndash;&gt;-->
+<!--&lt;!&ndash;<html xmlns="http://www.w3.org/1999/xhtml">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />&ndash;&gt;-->
+<!--&lt;!&ndash;<title>Untitled Document</title>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
 
-<body>
+<!--<body>-->
+{% extends 'Logintemplate.html' %}
+{% block body %}
 <form id="form1" name="form1" method="post" action="/S_regi">
-  <table width="640" border="1">
+  <table width="640" border="0">
     <tr>
       <td width="91">Name</td>
       <td width="269"><label for="textfield"></label>
-      <input type="text" name="textfield" id="textfield" /></td>
+      <input type="text" name="textfield" id="textfield" required pattern="[A-Z a-z]{3,25}"/></td>
     </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr><td></td></tr>
     <tr>
       <td>Company's Name</td>
       <td><label for="textfield2"></label>
-      <input type="text" name="textfield2" id="textfield2" /></td>
+      <input type="text" name="textfield2" id="textfield2" required /></td>
+    </tr>
+    <tr><td></td></tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Building No.</td>
       <td><label for="textfield3"></label>
-      <input type="text" name="textfield3" id="textfield3" /></td>
+      <input type="text" name="textfield3" id="textfield3" title="Numers only" required pattern="[0-9]{4}" /></td>
+    </tr>
+    <tr><td></td></tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>City</td>
       <td><label for="textfield4"></label>
-      <input type="text" name="textfield4" id="textfield4" /></td>
+      <input type="text" name="textfield4" id="textfield4"  required pattern="[A-Z a-z0-9]{3,25}"/></td>
+    </tr>
+    <tr><td></td></tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>State</td>
       <td><label for="textfield5"></label>
-      <input type="text" name="textfield5" id="textfield5" /></td>
+      <input type="text" name="textfield5" id="textfield5" required pattern="[A-Z a-z0-9]{3,25}"/></td>
+    </tr>
+    <tr><td></td></tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Country</td>
       <td><label for="textfield6"></label>
-      <input type="text" name="textfield6" id="textfield6" /></td>
+      <input type="text" name="textfield6" id="textfield6" required pattern="[A-Z a-z0-9]{3,25}"/></td>
+    </tr>
+    <tr><td></td></tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Pin Code</td>
       <td><label for="textfield7"></label>
-      <input type="text" name="textfield7" id="textfield7" /></td>
+      <input type="text" name="textfield7" id="textfield7" required pattern="[0-9]{6}" /></td>
+    </tr>
+    <tr><td></td></tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Email</td>
       <td><label for="textfield8"></label>
-      <input type="text" name="textfield8" id="textfield8" /></td>
+      <input type="text" name="textfield8" id="textfield8" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" /></td>
+    </tr>
+    <tr><td></td></tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Mob</td>
       <td><label for="textfield9"></label>
-      <input type="text" name="textfield9" id="textfield9" /></td>
+      <input type="text" name="textfield9" id="textfield9" tittle="10 digits numers" required pattern="[6789][0-9]{9}"/></td>
+    </tr>
+    <tr><td></td></tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Office No:</td>
       <td><label for="select"></label>
-        <select name="select" id="select">
+        <select name="select" id="select" required >
           <option value="">Select</option>
           <option value="+61">AUS</option>
           <option value="+1">CAN</option>
           <option value="+81">JPN</option>
           <option value="+91">IND</option>
           <option value="+1">USA</option>
-          <option value="+92">PAK</option>
-        </select> <label for="textfield10"></label>
-      <input type="text" name="textfield10" id="textfield10" /></td>
+        </select><label for="textfield10"></label>
+      <input type="text" name="textfield10" id="textfield10" required pattern="[0-9]{7}" /></td>
+    </tr>
+    <tr><td></td></tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Passsword</td>
       <td><label for="textfield11"></label>
-      <input type="text" name="textfield11" id="textfield11" /></td>
+      <input type="password" name="textfield11" id="textfield11" title="Atleast 6 characters" required pattern="[A-Z a-z0-9]{6,25}"/></td>
     </tr>
     <tr>
-      <td colspan="2">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
-      <td colspan="2"><div align="center">
-        <input type="submit" name="button" id="button" value="Register" />
-      </div></td>
+      <td colspan="2"><div align="center"></div>        <div align="center">
+          <input type="submit" name="button" id="button" value="Register" />
+      </div>        <div align="center"></div></td>
     </tr>
+    <tr><td></td></tr>
   </table>
 </form>
-</body>
-</html>
+<!--</body>-->
+{% endblock %}
+

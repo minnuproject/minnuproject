@@ -1,23 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-</head>
+<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />-->
+<!--<title>Untitled Document</title>-->
+<!--</head>-->
 
-<body>
+<!--<body>-->
+{% extends 'SellersHomeTemplates.html' %}
+  {% block body %}
 <form id="form1" name="form1" method="post" action="">
-  <table width="1342" border="1">
+  <table width="1101" border="1">
     <tr>
-      <td width="202"><a href="/Sel_Product_mgt">Product Management</a></td>
-      <td width="205"><a href="/Offers_Management">Offers Management</a></td>
-      <td width="163"><a href="/Sel_CustomerOrder">Customer Orders</a></td>
-      <td width="256"><a href="/Check_CustReview">Checking  Customer Review</a></td>
-      <td width="178"><a href="#">Stock Notification</a></td>
-      <td width="178"><a href="/Sel_SiteView">View Site Notification</a></td>
-      <td width="54"><a href="/login">Logout</a></td>
+      <td width="166"><a href="/Sel_Product_mgt">Products</a></td>
+      <td width="150"><a href="/Offers_Management">Offers</a></td>
+      <td width="164"><a href="/Sel_CustomerOrder">Customer Orders</a></td>
+      <td width="170"><a href="/Check_CustReview">Customer Review</a></td>
+      <td width="173"><a href="/Sel_StockNoti">Stock Notification</a></td>
+      <td width="155"><a href="/Sel_SiteView">Site Notification</a></td>
+      <td width="77"><a href="/login">Logout</a></td>
     </tr>
   </table>
 </form>
-</body>
-</html>
+{% endblock %}
+<!--</body>-->
+<!--</html>-->
